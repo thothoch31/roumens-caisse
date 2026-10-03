@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Prépa Roumens">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#13072f">
+<title>Préparation — Roumens</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#fff;overscroll-behavior:none;touch-action:manipulation;background:#10072b;background-image:radial-gradient(circle at 12% 12%,rgba(255,211,77,.18),transparent 18rem),radial-gradient(circle at 88% 8%,rgba(0,229,255,.14),transparent 20rem),linear-gradient(135deg,#08051b 0%,#17083b 45%,#251057 100%);display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(6,4,19,.85);border-bottom:1px solid rgba(255,255,255,.12);flex-wrap:wrap}
+h1{font-size:22px;margin:0;font-weight:1000;flex:1;min-width:200px}
+.pill{border-radius:999px;padding:7px 13px;font-weight:1000;font-size:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);white-space:nowrap}
+#etat.ok{background:rgba(0,255,165,.14);border-color:rgba(0,255,165,.35)}
+#etat.ko{background:rgba(255,80,80,.28);border-color:rgba(255,80,80,.7)}
+#count{background:linear-gradient(145deg,#ffd34d,#ff8c00);color:#17083b;border:0;font-size:16px}
+#resume{display:flex;gap:8px;flex-wrap:wrap;padding:8px 14px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);min-height:44px;align-items:center}
+#resume .lbl{font-size:12px;font-weight:1000;letter-spacing:.8px;opacity:.6;text-transform:uppercase;margin-right:4px}
+.sum{border-radius:10px;padding:5px 10px;font-weight:1000;font-size:16px}
+main{flex:1;overflow-y:auto;padding:12px;-webkit-overflow-scrolling:touch}
+#cmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;align-items:start}
+.card{border-radius:20px;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.14);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 14px 30px rgba(0,0,0,.28)}
+.card.nouv{animation:flash 1s ease-out 3}
+@keyframes flash{0%{box-shadow:0 0 0 0 rgba(255,211,77,.95);border-color:#ffd34d}100%{box-shadow:0 0 0 18px rgba(255,211,77,0)}}
+.top{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(0,0,0,.25)}
+.num{font-size:34px;font-weight:1000;line-height:1}
+.temps{font-size:20px;font-weight:1000;border-radius:10px;padding:4px 10px;background:rgba(0,255,165,.18);color:#00ffa5}
+.temps.moyen{background:rgba(255,170,0,.22);color:#ffb52e}
+.temps.long{background:rgba(255,60,60,.3);color:#ff6b6b}
+.items{padding:8px 12px;flex:1}
+.it{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:21px;font-weight:900}
+.it:last-child{border-bottom:0}
+.q{min-width:46px;text-align:center;border-radius:10px;padding:4px 6px;font-size:22px;font-weight:1000}
+.heure{font-size:12px;opacity:.55;padding:0 14px 6px}
+.servir{border:0;margin:0;padding:18px;font-size:22px;font-weight:1000;color:#fff;background:#00a86b;touch-action:manipulation;cursor:pointer}
+.servir:active{filter:brightness(.85)}
+.tag{padding:6px 12px;font-size:16px;font-weight:1000;text-align:center;letter-spacing:.5px}.tag.modif{background:#00a3c4}.tag.ajout{background:#ff8c00;color:#17083b}.card.estmodif{border-color:#00e5ff}
+.vide{grid-column:1/-1;text-align:center;margin-top:12vh;opacity:.55;font-size:26px;font-weight:900}
+footer{display:flex;gap:8px;align-items:center;padding:8px 14px;background:rgba(6,4,19,.85);border-top:1px solid rgba(255,255,255,.12);overflow-x:auto;min-height:52px}
+footer .lbl{font-size:12px;font-weight:1000;letter-spacing:.8px;opacity:.6;text-transform:uppercase;white-space:nowrap}
+.rappel{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;border-radius:12px;padding:8px 12px;font-weight:1000;font-size:15px;white-space:nowrap;touch-action:manipulation}
+/* couleurs des catégories (mêmes que la caisse) */
+.Bières{background:linear-gradient(145deg,#b86b00,#ffae19)}.Softs{background:linear-gradient(145deg,#006dc7,#00b9ff)}.Punch{background:linear-gradient(145deg,#7924bd,#f05cd6)}.Get{background:linear-gradient(145deg,#8c1018,#ff4048)}.Chaud{background:linear-gradient(145deg,#5b3a1e,#a8703f)}.Snack{background:linear-gradient(145deg,#a8461a,#f08a2c)}.Vin{background:linear-gradient(145deg,#5a0f2e,#a8234f)}.Autre{background:rgba(255,255,255,.2)}
+#start{position:fixed;inset:0;z-index:50;background:rgba(6,4,19,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:20px}
+#start button{border:0;border-radius:20px;padding:22px 40px;font-size:26px;font-weight:1000;background:linear-gradient(145deg,#ffd34d,#ff8c00);color:#17083b}
+@media (max-width:480px){h1{font-size:17px}.num{font-size:28px}.it{font-size:18px}#cmds{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="start">
+  <div style="font-size:60px">🍺</div>
+  <div style="font-size:24px;font-weight:1000;color:#ffd34d">Écran préparation</div>
+  <div style="opacity:.6;max-width:460px">Quelles commandes afficher sur cet écran ?</div>
+  <div id="choixFiltre" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:760px"></div>
+  <div style="display:flex;gap:8px;width:min(420px,90vw)">
+    <input id="autreFiltre" type="text" placeholder="Autre point de vente…" style="flex:1;border:0;border-radius:16px;padding:12px;font-size:18px">
+    <button onclick="const v=document.getElementById('autreFiltre').value.trim(); if(v) demarrer(v)" style="padding:12px 20px;font-size:18px">OK</button>
+  </div>
+</div>
+
+<header>
+  <h1>Préparation — Roumens</h1>
+  <button class="pill" id="filtreBtn" onclick="location.reload()" style="color:#17083b;background:#ffd34d;border-color:#ffd34d;cursor:pointer">📍 Toutes</button>
+  <div class="pill" id="count">0 en attente</div>
+  <div class="pill" id="etat">● Connexion…</div>
+  <button class="pill" id="sonBtn" onclick="toggleSon()" style="color:#fff;cursor:pointer">🔔 Son</button>
+</header>
+<div id="resume"></div>
+<main><div id="cmds"></div></main>
+<footer id="servies"><span class="lbl">Servies (toucher pour rappeler)</span></footer>
+
+<script>
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxh3mPmNHPS1cEuDYO2BcNZMQAqXOJYhS123DdRC2IGpWacEQgyTltxFJIQ1V5hgCg/exec';
+const POLL_MS = 2500;
+const SEUIL_MOYEN = 3*60000, SEUIL_LONG = 6*60000;
+
+let commandes = [];        // dernière liste reçue
+let decalage = 0;          // décalage d'horloge tablette / serveur Google
+let actionsLocales = {};   // id -> statut forcé localement en attendant la confirmation
+let connus = null;         // ids déjà vus (pour repérer les nouvelles)
+let nouveaux = new Set();
+let son = true;
+try{ son = localStorage.getItem('prepaSon') !== '0'; }catch(e){}
+let audioCtx = null, chargement = false;
+
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const CATS = ['Bières','Softs','Punch','Get','Chaud','Snack','Vin'];
+const catClass = c => CATS.includes(c) ? c : 'Autre';
+
+const POSTES = ['Bar place','Bar restauration'];
+let filtre = '';   // '' = toutes les caisses
+(function(){
+  let dernier = null; try{ dernier = localStorage.getItem('prepaFiltre'); }catch(e){}
+  const choix = [['','Toutes les caisses']].concat(POSTES.map(p=>[p,p]));
+  if(dernier && !POSTES.includes(dernier)) choix.push([dernier,dernier]);
+  document.getElementById('choixFiltre').innerHTML = choix.map(([v,l])=>
+    `<button onclick='demarrer(${JSON.stringify(v)})' style="${v===dernier?'outline:3px solid #fff;':''}">${esc(l)}</button>`).join('');
+})();
+
+function demarrer(f){
+  filtre = f || '';
+  try{ localStorage.setItem('prepaFiltre', filtre); }catch(e){}
+  document.getElementById('filtreBtn').textContent = '📍 ' + (filtre || 'Toutes');
+  document.getElementById('start').style.display='none';
+  try{ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
+  garderEcranAllume();
+  majSonBtn();
+  charger(); setInterval(charger, POLL_MS); setInterval(afficher, 1000);
+}
+
+async function garderEcranAllume(){
+  try{ if('wakeLock' in navigator){ await navigator.wakeLock.request('screen'); } }catch(e){}
+}
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible') garderEcranAllume(); });
+
+function bip(){
+  if(!son || !audioCtx) return;
+  try{
+    [0,0.18].forEach(t=>{
+      const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type='sine'; o.frequency.value = t ? 1175 : 880;
+      g.gain.setValueAtTime(0.0001, audioCtx.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(0.4, audioCtx.currentTime+t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+t+0.16);
+      o.connect(g).connect(audioCtx.destination); o.start(audioCtx.currentTime+t); o.stop(audioCtx.currentTime+t+0.18);
+    });
+  }catch(e){}
+}
+function toggleSon(){ son=!son; try{localStorage.setItem('prepaSon', son?'1':'0');}catch(e){} majSonBtn(); if(son) bip(); }
+function majSonBtn(){ document.getElementById('sonBtn').textContent = son ? '🔔 Son' : '🔕 Muet'; }
+
+async function charger(){
+  if(chargement) return; chargement = true;
+  try{
+    const r = await fetch(SHEET_URL + '?action=list&t=' + Date.now());
+    const j = await r.json();
+    if(!j.ok) throw new Error('réponse invalide');
+    decalage = j.now - Date.now();
+    commandes = (j.commandes || []).filter(c => !filtre || c.caisse === filtre);
+    // les actions locales confirmées par le serveur peuvent être oubliées
+    commandes.forEach(c=>{ if(actionsLocales[c.id] && actionsLocales[c.id].statut===c.statut) delete actionsLocales[c.id]; });
+    // repérer les nouvelles commandes
+    const enAttente = commandes.filter(c=>c.statut==='attente').map(c=>c.id+':'+(c.v||1));
+    if(connus===null){ connus = new Set(enAttente); }
+    else{
+      const nv = enAttente.filter(id=>!connus.has(id));
+      if(nv.length){ nv.forEach(id=>{ nouveaux.add(id); connus.add(id); setTimeout(()=>nouveaux.delete(id), 3500); }); bip(); }
+    }
+    etat(true);
+    afficher();
+  }catch(e){
+    etat(false);
+  }
+  chargement = false;
+}
+
+function etat(ok){
+  const el=document.getElementById('etat');
+  el.className='pill '+(ok?'ok':'ko');
+  el.textContent = ok ? '● Connecté' : '● Hors ligne — nouvel essai…';
+}
+
+function statutDe(c){
+  const a = actionsLocales[c.id];
+  if(a && Date.now()-a.t < 30000) return a.statut;
+  return c.statut;
+}
+
+function duree(ms){
+  const s=Math.max(0,Math.floor(ms/1000));
+  return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+}
+
+function afficher(){
+  const maintenant = Date.now() + decalage;
+  const att = commandes.filter(c=>statutDe(c)==='attente').sort((a,b)=>a.ts-b.ts);
+  const serv = commandes.filter(c=>statutDe(c)==='servie').sort((a,b)=>(b.servieA||0)-(a.servieA||0)).slice(0,8);
+
+  document.getElementById('count').textContent = att.length + ' en attente';
+
+  // Résumé : total à préparer par article
+  const tot = {};
+  att.forEach(c=>c.items.forEach(it=>{ const k=it.n; if(!tot[k]) tot[k]={q:0,c:it.c}; tot[k].q+=it.q; }));
+  const res = Object.entries(tot).sort((a,b)=>b[1].q-a[1].q);
+  document.getElementById('resume').innerHTML = res.length
+    ? '<span class="lbl">À sortir</span>' + res.map(([n,v])=>`<span class="sum ${catClass(v.c)}">${v.q} × ${esc(n)}</span>`).join('')
+    : '<span class="lbl">Rien à préparer</span>';
+
+  const wrap = document.getElementById('cmds');
+  if(!att.length){ wrap.innerHTML = '<div class="vide">✓ Aucune commande en attente</div>'; }
+  else wrap.innerHTML = att.map(c=>{
+    const ecoule = maintenant - c.ts;
+    const cls = ecoule > SEUIL_LONG ? 'long' : ecoule > SEUIL_MOYEN ? 'moyen' : '';
+    const tag = c.modif==='ajout' ? '<div class="tag ajout">+ AJOUT (déjà servie)</div>' : c.modif==='modif' ? '<div class="tag modif">✏️ MODIFIÉE</div>' : '';
+    return `<div class="card ${nouveaux.has(c.id+':'+(c.v||1))?'nouv':''} ${c.modif?'estmodif':''}">
+      ${tag}<div class="top"><div class="num">N°${esc(c.numero)}</div><div class="temps ${cls}">${duree(ecoule)}</div></div>
+      <div class="items">${c.items.map(it=>`<div class="it"><span class="q ${catClass(it.c)}">${it.q}</span><span>${esc(it.n)}</span></div>`).join('')}</div>
+      <div class="heure">Validée à ${esc(c.heure)}${!filtre && c.caisse ? ' · <b>'+esc(c.caisse)+'</b>' : ''}</div>
+      <button class="servir" onclick="marquer('${esc(c.id)}','servie')">✓ SERVIE</button>
+    </div>`;
+  }).join('');
+
+  document.getElementById('servies').innerHTML = '<span class="lbl">Servies (toucher pour rappeler)</span>' +
+    serv.map(c=>`<button class="rappel" onclick="marquer('${esc(c.id)}','attente')">↩ N°${esc(c.numero)}</button>`).join('');
+}
+
+async function marquer(id, statut){
+  const c = commandes.find(x=>x.id===id);
+  if(c && statut==='servie') c.servieA = Date.now() + decalage;
+  actionsLocales[id] = { statut, t: Date.now() };
+  afficher();
+  try{
+    const r = await fetch(SHEET_URL, { method:'POST', body: JSON.stringify({ action: statut==='servie'?'servie':'rappel', id }) });
+    const j = await r.json();
+    if(!j.ok) throw new Error();
+  }catch(e){
+    // on réessaie une fois après 3 s
+    setTimeout(()=>{ fetch(SHEET_URL, { method:'POST', body: JSON.stringify({ action: statut==='servie'?'servie':'rappel', id }) }).catch(()=>{}); }, 3000);
+  }
+}
+</script>
+</body>
+</html>
