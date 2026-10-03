@@ -44,7 +44,7 @@ footer{display:flex;gap:8px;align-items:center;padding:8px 14px;background:rgba(
 footer .lbl{font-size:12px;font-weight:1000;letter-spacing:.8px;opacity:.6;text-transform:uppercase;white-space:nowrap}
 .rappel{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;border-radius:12px;padding:8px 12px;font-weight:1000;font-size:15px;white-space:nowrap;touch-action:manipulation}
 /* couleurs des catégories (mêmes que la caisse) */
-.Bières{background:linear-gradient(145deg,#b86b00,#ffae19)}.Softs{background:linear-gradient(145deg,#006dc7,#00b9ff)}.Punch{background:linear-gradient(145deg,#7924bd,#f05cd6)}.Get{background:linear-gradient(145deg,#8c1018,#ff4048)}.Chaud{background:linear-gradient(145deg,#5b3a1e,#a8703f)}.Snack{background:linear-gradient(145deg,#a8461a,#f08a2c)}.Vin{background:linear-gradient(145deg,#5a0f2e,#a8234f)}.Autre{background:rgba(255,255,255,.2)}
+.Bières{background:linear-gradient(145deg,#b86b00,#ffae19)}.Softs{background:linear-gradient(145deg,#006dc7,#00b9ff)}.Punch{background:linear-gradient(145deg,#7924bd,#f05cd6)}.Get{background:linear-gradient(145deg,#8c1018,#ff4048)}.Chaud{background:linear-gradient(145deg,#5b3a1e,#a8703f)}.Snack{background:linear-gradient(145deg,#a8461a,#f08a2c)}.Vin{background:linear-gradient(145deg,#5a0f2e,#a8234f)}.Consignes{background:linear-gradient(145deg,#555,#999)}.Autre{background:rgba(255,255,255,.2)}
 #start{position:fixed;inset:0;z-index:50;background:rgba(6,4,19,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:20px}
 #start button{border:0;border-radius:20px;padding:22px 40px;font-size:26px;font-weight:1000;background:linear-gradient(145deg,#ffd34d,#ff8c00);color:#17083b}
 @media (max-width:480px){h1{font-size:17px}.num{font-size:28px}.it{font-size:18px}#cmds{grid-template-columns:1fr}}
@@ -88,7 +88,7 @@ try{ son = localStorage.getItem('prepaSon') !== '0'; }catch(e){}
 let audioCtx = null, chargement = false;
 
 const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const CATS = ['Bières','Softs','Punch','Get','Chaud','Snack','Vin'];
+const CATS = ['Bières','Softs','Punch','Get','Chaud','Snack','Vin','Consignes'];
 const catClass = c => CATS.includes(c) ? c : 'Autre';
 
 const POSTES = ['Bar place','Bar restauration'];
@@ -222,6 +222,9 @@ async function marquer(id, statut){
     setTimeout(()=>{ fetch(SHEET_URL, { method:'POST', body: JSON.stringify({ action: statut==='servie'?'servie':'rappel', id }) }).catch(()=>{}); }, 3000);
   }
 }
+</script>
+<script>
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }
 </script>
 </body>
 </html>
